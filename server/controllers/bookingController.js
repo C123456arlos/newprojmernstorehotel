@@ -85,7 +85,7 @@ export const createBooking = async (req, res) => {
             try {
                 const data = await mg.messages.create("sandboxd334b10d3325498ea7885978c47ecc91.mailgun.org", {
                     from: "Mailgun Sandbox <postmaster@sandboxd334b10d3325498ea7885978c47ecc91.mailgun.org>",
-                    to: ["Carlos Ayoroa <carlosesteban.ayoroamurillo@gmail.com> "],
+                    to: process.env.SENDER_EMAIL,
                     subject: 'hotel booking details',
                     html: `
             <h2>your booking details</h2>
