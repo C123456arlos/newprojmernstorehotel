@@ -1,5 +1,9 @@
 import mongoose from 'mongoose'
 const userSchema = mongoose.Schema({
+    clerkUserId: {
+        type: String,
+        required: true
+    },
     _id: {
         type: String,
         required: true

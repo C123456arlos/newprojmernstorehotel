@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { assets } from "../assets/assets";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useClerk, useUser, UserButton } from "@clerk/react";
+import { useAppContext } from "../context/AppContext";
 // import { useClerk, useUser, UserButton } from '@clerk/clerk-react'
 
 const BookIcon = () => (
@@ -22,10 +23,12 @@ const Navbar = () => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const { openSignIn } = useClerk()
-    const { user } = useUser()
-
-    const navigate = useNavigate()
+    // const { user } = useUser()
+    // const navigate = useNavigate()
     const location = useLocation()
+    const { rooms,
+        user,
+        navigate, isOwner, setShowHotelReg } = useAppContext()
     useEffect(() => {
         if (location.pathname !== '/') {
             setIsScrolled(true)
@@ -39,8 +42,8 @@ const Navbar = () => {
         };
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
-    }, [location.pathname]);
-
+    }, [location.pathname])
+    console.log(rooms)
     return (
 
         <nav className={`fixed top-0 left-0  w-full flex items-center justify-between px-4 md:px-16 lg:px-24 xl:px-32 transition-all duration-500 z-50 ${isScrolled ? "bg-white/80 shadow-md text-gray-700 backdrop-blur-lg py-3 md:py-4" : "py-4 md:py-6"}`}>
@@ -58,9 +61,10 @@ const Navbar = () => {
                         <div className={`${isScrolled ? "bg-gray-700" : "bg-white"} h-0.5 w-0 group-hover:w-full transition-all duration-300`} />
                     </a>
                 ))}
-                <button className={`border px-4 py-1 text-sm font-light rounded-full cursor-pointer ${isScrolled ? 'text-black' : 'text-white'} transition-all`} onClick={() => navigate('/owner')}>
-                    dashboard
-                </button>
+                {user &&
+                    <button className={`border px-4 py-1 text-sm font-light rounded-full cursor-pointer ${isScrolled ? 'text-black' : 'text-white'} transition-all`} onClick={() => isOwner ? navigate('/owner') : setShowHotelReg(true)} >
+                        {isOwner ? 'Dashboard' : 'list your hotel'}
+                    </button>}
             </div>
 
             {/* Desktop Right */}
@@ -112,14 +116,16 @@ const Navbar = () => {
                         {link.name}
                     </a>
                 ))}
+                {user && (
 
-                <button className="border px-4 py-1 text-sm font-light rounded-full cursor-pointer transition-all" onClick={() => navigate('/owner')}>
-                    dashboard
-                </button>
-
-                <button onClick={openSignIn} className="bg-black text-white px-8 py-2.5 rounded-full transition-all duration-500">
-                    Login
-                </button>
+                    <button className="border px-4 py-1 text-sm font-light rounded-full cursor-pointer transition-all" onClick={() => isOwner ? navigate('/owner') : setShowHotelReg(true)}>
+                        {isOwner ? 'Dashboard' : 'list your hotel'}
+                    </button>
+                )
+                }
+                {!user && <button onClick={openSignIn} className="bg-black text-white px-8 py-2.5 rounded-full transition-all duration-500">
+                    login
+                </button>}
             </div>
 
         </nav>
@@ -127,9 +133,3 @@ const Navbar = () => {
     );
 }
 export default Navbar
-
-
-
-
-
-
