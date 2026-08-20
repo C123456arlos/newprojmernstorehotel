@@ -37,14 +37,8 @@ export const protect = async (req, res, next) => {
             ) || clerkUser.emailAddresses[0];
         const image = clerkUser.imageUrl
         const email = extractEmailFromUserInfo.emailAddress;
-        const existingUser = await User.findOne({ clerkUserId: userId });
-        const shouldBeAdmin = email
-        const nextRole =
-            existingUser?.role === "hotelOwner"
-                ? "hotelOwner"
-                : shouldBeAdmin
-                    ? "hotelOwner"
-                    : existingUser?.role || "user";
+        const name = clerkUser.firstName + ' ' + clerkUser.lastName
+
 
         const newlyCreatedDbUser = await User.findOneAndUpdate(
             {
@@ -53,7 +47,8 @@ export const protect = async (req, res, next) => {
             {
                 clerkUserId: userId,
                 email,
-                image
+                image,
+                username: name
                 // role: nextRole,
             },
             {

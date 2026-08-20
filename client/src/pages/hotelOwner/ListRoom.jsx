@@ -9,7 +9,8 @@ const ListRoom = () => {
 
     const fetchRooms = async () => {
         try {
-            const { data } = await axios.get('/api/rooms/owner', { headers: { Authorization: `Bearer ${await getToken()}` } })
+            const { data } = await axios.post('/api/rooms/owner', {}, { headers: { Authorization: `Bearer ${await getToken()}` } })
+            console.log(data)
             if (data.success) {
                 setRooms(data.rooms)
             } else {
@@ -33,6 +34,7 @@ const ListRoom = () => {
             fetchRooms()
         }
     }, [user])
+    console.log(rooms)
     return (
         <div>
             <Title align={'left'} font={'outfit'} title={'room listings'} subTitle={'view edit or manage all listed rooms keep the information up-to-date to provide the best experience for users'}></Title>

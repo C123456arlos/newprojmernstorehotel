@@ -14,7 +14,8 @@ export const createRoom = async (req, res) => {
         // const hotel = await Hotel.findById({ _id: _id })
         const hotel = await Hotel.findOneAndUpdate({
             owner: {
-                _id: req.user._id,
+                _id: req.user.clerkUserId
+                ,
             }
         })
         console.log(hotel)
@@ -37,12 +38,14 @@ export const createRoom = async (req, res) => {
             const response = await cloudinary.uploader.upload(file.path)
             return response.secure_url
         })
+        const hotelData = await Hotel.findOne({ owner: req.auth.userId })
         const images = await Promise.all(uploadImages)
         await Room.create({
-            hotel: {
-                _id: hotel._id,
-                image: ownerHotel.image
-            },
+            hotel: { _id: hotelData._id.toString() },
+            // hotel: {
+            //     _id: hotel._id,
+            //     image: ownerHotel.image
+            // },
             // {
             //     owner: { image: ownerHotel.image }
             // },
@@ -73,8 +76,15 @@ export const getRooms = async (req, res) => {
 }
 export const getOwnerRooms = async (req, res) => {
     try {
+
+
         const hotelData = await Hotel.findOne({ owner: req.auth.userId })
-        const rooms = await Room.find({ hotel: hotelData._id.toString() }).populate('hotel')
+        console.log(hotelData, 'test')
+        console.log(hotelData._id.toString(), 'testestestest')
+        // const roomsData = await Room.find()
+        // const rooms = await Room.find({ hotel: hotelData._id.toString() }).populate('hotel')
+        const rooms = await Room.find({ hotel: { _id: hotelData._id.toString() } }).populate('hotel')
+        console.log(rooms, 'testrooms')
         res.json({ success: true, rooms })
     } catch (error) {
         res.json({ success: false, message: error.message })

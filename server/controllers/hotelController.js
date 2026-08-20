@@ -25,7 +25,7 @@ export const registerHotel = async (req, res) => {
             // owner,
 
             owner: {
-                _id: req.user._id
+                _id: req.user.clerkUserId
             }
 
             // image: req.user.image,

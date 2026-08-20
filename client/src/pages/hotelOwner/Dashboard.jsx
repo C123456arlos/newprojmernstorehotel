@@ -14,7 +14,8 @@ const Dashboard = () => {
     console.log(rooms)
     const fetchDashboardData = async () => {
         try {
-            const { data } = await axios.get('/api/bookings/hotel', { headers: { Authorization: `Bearer ${await getToken()}` } })
+            const { data } = await axios.post('/api/bookings/hotel', {}, { headers: { Authorization: `Bearer ${await getToken()}` } })
+            console.log(data)
             if (data.success) {
                 setDashboardData(data.dashboardData)
             } else {
@@ -29,6 +30,7 @@ const Dashboard = () => {
             fetchDashboardData()
         }
     }, [user])
+    console.log(dashboardData)
     return (
         <div>
             <Title align={'left'} font={'outfit'} title={'dashboard'} subTitle={'monitor your room listings track bookings and analyze revenue-all in one place stay updated with real time insights to ensure smooth operations'}></Title>
