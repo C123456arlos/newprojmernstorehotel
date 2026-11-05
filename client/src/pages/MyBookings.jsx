@@ -15,6 +15,7 @@ const MyBookings = () => {
                     Authorization: `Bearer ${await getToken()}`
                 }
             })
+            console.log(data)
             if (data.success) {
                 setBookings(data.bookings)
             }
@@ -28,6 +29,8 @@ const MyBookings = () => {
     const handlePayment = async (bookingId) => {
         try {
             const { data } = await axios.post('/api/bookings/stripe-payment', { bookingId }, { headers: { Authorization: `Bearer ${await getToken()}` } })
+           
+           console.log(data, 'data')
             if (data.success) {
                 window.location.href = data.url
             } else {
@@ -42,7 +45,6 @@ const MyBookings = () => {
             fecthUserBookings()
         }
     }, [user])
-
     return (
         <div className='py-28 md:pb-35 md:pt-32 px-4 md:px-16 lg:px-24 xl:px-32'>
             <Title title='my bookings' subTitle='easily manage your past current and upcoming hotel reservations in one place plan your trips seamlessly with just a few clicks' align={'left'}></Title>

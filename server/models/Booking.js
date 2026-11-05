@@ -39,7 +39,7 @@ const bookingSchema = new mongoose.Schema({
     paymentMethod: {
         type: String,
         required: true,
-        default: 'pay at hotel'
+        default: 'Stripe'
     },
     isPaid: {
         type: Boolean,

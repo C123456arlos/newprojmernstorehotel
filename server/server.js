@@ -10,7 +10,8 @@ import connectCloudinary from './configs/cloudinary.js'
 import roomRouter from './routes/roomRoutes.js'
 import bookingRouter from './routes/bookingRoutes.js'
 import { stripeWebhooks } from './controllers/stripeWebhooks.js'
-
+import dns  from "node:dns/promises"
+dns.setServers(["1.1.1.1"])
 connectDB()
 connectCloudinary()
 
@@ -20,7 +21,7 @@ app.use(cors())
 app.post('/api/stripe', express.raw({ type: 'application/json' }), stripeWebhooks)
 app.use(express.json())
 app.use(clerkMiddleware())
-app.use('/api/clerk', clerkWebhooks)
+app.use('/clerk', clerkWebhooks)
 
 app.get('/', (req, res) => res.send('server running'))
 app.use('/api/user', userRouter)

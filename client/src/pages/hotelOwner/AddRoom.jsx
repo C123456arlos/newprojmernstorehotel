@@ -34,6 +34,7 @@ const AddRoom = () => {
         setLoading(true)
         try {
             const formData = new FormData()
+            console.log(formData, 'formdata')
             formData.append('roomType', inputs.roomType)
             formData.append('pricePerNight', inputs.pricePerNight)
             const amenities = Object.keys(inputs.amenities).filter(key => inputs.amenities[key])
@@ -41,9 +42,10 @@ const AddRoom = () => {
             Object.keys(images).forEach((key) => {
                 images[key] && formData.append('images', images[key])
             })
-            const { data } = await axios.post('/api/rooms/', formData, { headers: { Authorization: `Bearer ${await getToken()}` } })
+            // const { data } = await axios.post('/api/rooms/', formData, { headers: { Authorization: `Bearer ${await getToken()}` } })
+            // console.log(data, 'data')
             if (data.success) {
-                toast.success(data.message)
+                // toast.success(data.message)
                 setInputs({
                     roomType: '',
                     pricePerNight: 0,
@@ -57,13 +59,14 @@ const AddRoom = () => {
                 })
                 setImages({ 1: null, 2: null, 3: null, 4: null })
             } else {
-                toast.error(data.message)
+                // toast.error(data.message)
             }
         } catch (error) {
-            toast.error(error.message)
-        } finally {
-            setLoading(false)
+            // toast.error(error.message)
         }
+        // finally {
+        //     setLoading(false)
+        // }
     }
     return (
         <form onSubmit={onSubmitHandler}>

@@ -6,6 +6,7 @@ import User from "../models/User.js"
 
 export const createRoom = async (req, res) => {
     try {
+        console.log(req.files, 'reapfiles path')
         const { clerkUserId } = req.user
         const { roomType, pricePerNight, amenities } = req.body
         const { _id } = req.user
@@ -102,3 +103,6 @@ export const toggleRoomAvailability = async (req, res) => {
         res.json({ success: false, message: error.message })
     }
 }
+
+
+// MyModel.updateMany({}, { $set: { notInSchema: 1 } });

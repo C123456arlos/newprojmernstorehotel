@@ -127,14 +127,16 @@ export const createBooking = async (req, res) => {
     }
 }
 export const getUserBookings = async (req, res) => {
-    console.log(req.user.clerkUserId)
+    console.log(req.user.clerkUserId, 'req.user.clerkUserId')
     try {
         const user = req.user._id
 
         console.log(user, 'user')
-        const bookings = await Booking.find({ user }).populate('hotel')
+        const bookings = await Booking.find().populate('hotel')
+        // const bookings = await Booking.find({ user }).populate('hotel')
         // const bookings = await Booking.find({ user }).populate('room hotel').sort({ createdAt: -1 })
         // console.log(bookings, 'bookings')
+        console.log(bookings, 'bookings')
         res.json({ success: true, bookings })
     } catch (error) {
         res.json({ success: false, message: 'failed to fetch bookings' })
