@@ -194,14 +194,14 @@ export const purchaseCourse = async (req, res) => {
 
         const newPurchase = await Purchase.create(purchaseData)
         const stripeInstance = new Stripe(process.env.STRIPE_SECRET_KEY)
-        const currency = process.env.CURRENCY.toLowerCase()
+        // const currency = process.env.CURRENCY.toLowerCase()
         const line_items = [{
             price_data: {
-                currency,
+                currency:'usd',
                 product_data: {
                     name: courseData.courseTitle
                 },
-                unit_amount: Math.floor(newPurchase.amount) * 100
+                unit_amount:200
             },
             quantity:1
         }]
