@@ -10,16 +10,21 @@ export const stripeWebhooks = async (request, response) => {
     } catch (error) {
         response.status(400).send('webhook error ${error.message}')
     }
-    if (event.type === 'payment_intent.succeeded') {
-        const paymentIntent = event.data.object
-        const paymentIntentId = paymentIntent.id
-        const session = await stripeInstance.checkout.sessions.list({
-            payment_intent: paymentIntentId
-        })
-        const { bookingId } = session.data[0].metadata
-        await Booking.findByIdAndUpdate(bookingId, { isPaid: true, paymentMethod: 'Stripe' })
-    } else {
-        console.log('unhandled event type', event.type)
+    try {
+        if (event.type === 'payment_intent.succeeded') {
+            const paymentIntent = event.data.object
+            const paymentIntentId = paymentIntent.id
+            const session = await stripeInstance.checkout.sessions.list({
+                payment_intent: paymentIntentId
+            })
+            const { bookingId } = session.data[0].metadata
+            await Booking.findByIdAndUpdate(bookingId, { isPaid: true, paymentMethod: 'Stripe' })
+        } else {
+            console.log('unhandled event type', event.type)
+        }
+        response.json({ received: true })
+ } catch (error) {
+        console.log('stripe error', error)
+        response.status(400).send(`webhook err ${error.message}`)
     }
-    response.json({ received: true })
 }
