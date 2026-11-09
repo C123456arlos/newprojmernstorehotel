@@ -19,7 +19,7 @@ export const stripeWebhooks = async (request, response) => {
                 payment_intent: paymentIntentId
             })
             const { purchaseId } = session.data[0].metadata
-            const purchases = await Purchase.findOne()
+            const purchases = await Purchase.findById(purchaseId)
             const purchasesId = purchases._id
             const purchase = await Purchase.findByIdAndUpdate(purchasesId, 
                 {status:'completed'}
