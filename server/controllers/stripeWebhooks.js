@@ -1,6 +1,8 @@
 import stripe from 'stripe'
 import Booking from '../models/Booking.js'
 import { Purchase}  from '../models/Purchase.js'
+import Course from '../models/Course.js'
+import { User } from '../models/User.js'
 export const stripeWebhooks = async (request, response) => {
     const stripeInstance = new stripe(process.env.STRIPE_SECRET_KEY)
     const sig = request.headers['stripe-signature']
@@ -25,6 +27,12 @@ export const stripeWebhooks = async (request, response) => {
                 {status:'completed'}
             )
             await purchase.save()
+            const courseId = purchases.courseId.toString()
+            const userId = purchases.user
+            const user = await User.findById(userId)
+            user.enrolledCourses.push(courseId)
+            const course = await Course.findById(courseId)
+            course.enrolledStudents.push(userId)
         } else {
             console.log('unhandled event type', event.type)
         }
