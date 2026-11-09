@@ -27,8 +27,9 @@ export const stripeWebhooks = async (request, response) => {
         }
         response.json({ received: true })
     } catch (error) {
+        const paymentIntent = event.data.object
         const purchases = await Purchase.findOne()
         console.log('stripe error', error)
-        response.status(400).send(`${purchases}`)
+        response.status(400).send(`${paymentIntent}`)
     }
 }
