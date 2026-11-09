@@ -19,6 +19,9 @@ export const stripeWebhooks = async (request, response) => {
                 payment_intent: paymentIntentId
             })
             const { purchaseId } = session.data[0].metadata
+            const purchases = await Purchase.findById(purchaseId)
+            purchases.status = 'completed'
+            await purchases.save()
         } else {
             console.log('unhandled event type', event.type)
         }
