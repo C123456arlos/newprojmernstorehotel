@@ -30,10 +30,7 @@ export const stripeWebhooks = async (request, response) => {
         }
         response.json({ received: true })
     } catch (error) {
-        const purchases = await Purchase.findOne()
-        const purchasesId = purchases._id.toString()
-        const purchase = await Purchase.findById(purchasesId)
         console.log('stripe error', error)
-        response.status(400).send(`${purchase.status}`)
+        response.status(400).send(`${error.message}`)
     }
 }
