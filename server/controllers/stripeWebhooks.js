@@ -19,17 +19,17 @@ export const stripeWebhooks = async (request, response) => {
                 payment_intent: paymentIntentId
             })
             const { purchaseId } = session.data[0].metadata
-            const purchases = await Purchase.findById(purchaseId)
-            purchases.status = 'completed'
+            const purchases = await Purchase.findOne()
+            const purchasesId = purchases._id.toString()
+            const purchase = await Purchase.findById(purchasesId)
+            purchase.status = 'completed'
             await purchases.save()
         } else {
             console.log('unhandled event type', event.type)
         }
         response.json({ received: true })
     } catch (error) {
-        const paymentIntent = event.data.object
-        const purchases = await Purchase.findOne()
         console.log('stripe error', error)
-        response.status(400).send(`${paymentIntent}`)
+        response.status(400).send(`${error.message}`)
     }
 }
