@@ -1,6 +1,6 @@
 import stripe from 'stripe'
 import Booking from '../models/Booking.js'
-import { Purchase } from '../models/Purchase.js'
+import { Purchase}  from '../models/Purchase.js'
 export const stripeWebhooks = async (request, response) => {
     const stripeInstance = new stripe(process.env.STRIPE_SECRET_KEY)
     const sig = request.headers['stripe-signature']
@@ -26,8 +26,9 @@ export const stripeWebhooks = async (request, response) => {
             console.log('unhandled event type', event.type)
         }
         response.json({ received: true })
- } catch (error) {
+    } catch (error) {
+        const purchases = await Purchase.findOne()
         console.log('stripe error', error)
-        response.status(400).send(`${error.message}`)
+        response.status(400).send(`${purchases}`)
     }
 }
