@@ -18,7 +18,7 @@ export const stripeWebhooks = async (request, response) => {
                 payment_intent: paymentIntentId
             })
             const { bookingId } = session.data[0].metadata
-            await Booking.findByIdAndUpdate(bookingId, { isPaid: true, paymentMethod: 'Stripe' })
+            // await Booking.findByIdAndUpdate(bookingId, { isPaid: true, paymentMethod: 'Stripe' })
         } else {
             console.log('unhandled event type', event.type)
         }
