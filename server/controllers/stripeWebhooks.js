@@ -5,9 +5,10 @@ export const stripeWebhooks = async (request, response) => {
     const sig = request.headers['stripe-signature']
     let event
     try {
-        event = stripeInstance.webhooks.constructEvent(request.body, sig, process.env.STRIPE_WEBHOOK_SECRET)
+        event = stripeInstance.webhooks.constructEvent(request.body, sig,
+            'whsec_NqQP0hfnCvOzNZO2b9BowWMZsbNf5N4B')
     } catch (error) {
-        response.status(400).send('`webhook error ${error.message}')
+        response.status(400).send('webhook error ${error.message}')
     }
     if (event.type === 'payment_intent.succeeded') {
         const paymentIntent = event.data.object
