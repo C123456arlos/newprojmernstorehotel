@@ -178,17 +178,15 @@ export const purchaseCourse = async (req, res) => {
     try {
         const { courseId } = req.body
         const { origin } = req.headers
-        const clerkUserId = req.auth.userId
-        const user = await User.findOne({ clerkUserId })
-        const id = user._id.toString('')
-        const userData = await User.findById(id)
+        const userId = req.auth.userId
         const courseData = await Course.findById(courseId)
+        const userData= await User.findById(userId)
         if (!userData || !courseData) {
             return res.json({success:false, message:'data not found'})
         }
         const purchaseData = {
             courseId: courseData._id,
-            userId:user._id,
+            userId:userData._id,
             amount:(courseData.coursePrice - courseData.discount * courseData.coursePrice / 100).toFixed(2)
         }
 
