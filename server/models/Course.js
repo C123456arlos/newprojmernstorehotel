@@ -27,21 +27,6 @@ const enrolledCourses = new mongoose.Schema({
     lecture: {type:String, required:true},
     chapter: {type:String, required:true},
 },{_id:false})
-const educatorSchema= new mongoose.Schema({
-       name: { type: String, required: true },
-    email: { type: String, required: true },
-    imageUrl: {
-        type: String,
-        required: true
-    },
-    enrolledCourses: [enrolledCourses]
-    // enrolledCourses: [
-    //     {
-    //         type: mongoose.Schema.Types.ObjectId,
-    //         ref:'Course'
-    //     }
-    // ]
-})
 const lectureSchema = new mongoose.Schema({
     lectureId: { type: String, required: true },
     lectureTitle: { type: String, required: true },
@@ -75,7 +60,6 @@ const courseSchema = new mongoose.Schema({
             }
         }
     ],
-    educatorId: [educatorSchema],
     educator: {
         type: String,
         ref: 'User',
