@@ -28,7 +28,7 @@ export const stripeWebhooks = async (request, response) => {
             )
             await purchase.save()
             const courseId = purchases.courseId.toString()
-            const userId = purchases.user
+            const userId = purchases.userId
             const user = await User.findById(userId)
             user.enrolledCourses.push(courseId)
             const course = await Course.findById(courseId)
