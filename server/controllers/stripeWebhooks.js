@@ -31,8 +31,10 @@ export const stripeWebhooks = async (request, response) => {
             const userId = purchases.userId
             const user = await User.findById(userId)
             user.enrolledCourses.push(courseId)
+            await user.save()
             const course = await Course.findById(courseId)
             course.enrolledStudents.push(userId)
+            await course.save()
         } else {
             console.log('unhandled event type', event.type)
         }
